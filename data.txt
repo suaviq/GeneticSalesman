@@ -1,0 +1,5 @@
+Warszawa Krakow Katowice Poznan 
+0 20 30 40
+20 0 35 60
+30 35 0 21
+40 60 21 0 

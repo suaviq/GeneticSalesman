@@ -1,0 +1,2 @@
+C:\Users\alase\source\repos\TravellingSalesman\Debug\TravellingSalesman.exe
+C:\Users\alase\source\repos\TravellingSalesman\Debug\TravellingSalesman.pdb
