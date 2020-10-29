@@ -1,0 +1,2 @@
+C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\x64\Debug\TravellingSalesman.exe
+C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\x64\Debug\TravellingSalesman.pdb

@@ -9,5 +9,5 @@ using namespace std;
 
 
 int main() {
-	vector<string> data = dataLoad();
+	vector<string> data = dataLoad(); 
 }
