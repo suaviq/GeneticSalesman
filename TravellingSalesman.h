@@ -2,96 +2,89 @@
 #include<iostream>
 #include<sstream>
 #include<iomanip>
-#include<fstream>									//including library which allows us to read files 
+#include<fstream>								
 #include<string>
 #include<vector>
 using namespace std; 
 
-vector<string> dataLoad() {							//creating a vector which will hold our data
-	ifstream file("data.txt");						//read data from file "data.txt"
-	vector<string>dcities;			
-	string input;
-	while (getline(file, input))
-	{
-		dcities.push_back(input);
-	}
-	for (string dcity : dcities)
-	{
-		cout << dcity << endl;
-	}
-	file.close();
-	return dcities;
-}
 
 //splitting a sentence into words 
-void split(vector<string> dataLoad) 
+vector<string> splitStringBySpaces(string dataLoad)
 {
-	string word = " ";
-	for (auto x : dataLoad) {
-		if (x == " ") {
-			cout << word << endl;
-
+	string word = "";
+	vector<string> words;
+	for (int i = 0; i < (int)(dataLoad.length()); i++) {
+		if (dataLoad[i] == ' ') {
+			words.push_back(word);
+			word = "";
 		}
 		else {
-			word = word + x;
+			word = word + dataLoad[i];
 		}
 	}
-	cout << word << endl;
+	return words;
 }
-//                       IS IT WORKING???????                      
-//??????????????????????????????????????????????????????????????????????????????????????????????
-//ignoring the first line because these are the names of the cities   
-vector<string> firstLine() {
-	ifstream file("data.txt");						//open file	
-	vector<string>dcities;							//setting up a place to store our data read from the file
-	string cities;					
-	/*Read and throw away the first line simply by doing
-	nothing with it and reading again*/
-	while (getline(file, cities)) {
-		dcities.push_back(cities);
+
+
+vector<vector<string>> loadData() {
+	ifstream file("data.txt");
+	vector<vector<string>> matrix;
+	if (!file) {
+		cout << "Cannot open file" << endl;
+		return matrix;
 	}
-	while (!file.eof()) {							//let's begin 	
-		getline(file, cities);						//over write the first line read
-		cout << cities << endl;
+	string cities;
+	while (getline(file, cities)) {
+		vector<string> data_row = splitStringBySpaces(cities);
+		matrix.push_back(data_row);
 	}
 	file.close();
-	return dcities;
-
+	return matrix;
+	
 }
-//???????????????????????????????????????????????????????????????????????????????????????????????
 
-//transforming data from txt into a matrix
-void transMatrix(double, double) {
-	ifstream file("data.txt");		//open input file
-	vector<vector<double>> matrix;	//create matrix as vector of vectors
-	int flag;
-	string line;					//read file
-	while (getline(file, line)) {
-		if (!file)						// (but it was IF!) if something went wrong (probably EOF), exit the loop
-			break;
-		if (line.empty()) {		// IF the line is empty, read row contents into vectorand append flag 1
-			flag == 1;
-			continue;
-			vector<double>row;
-			copy(istream_iterator<double>(file),
-				istream_iterator<double>(),
-				back_inserter(row));
-			row.push_back(flag);
-		if (flag ==0)				//E L S E 	// else read row contents into vector and append flag 0
-			vector<double>row;
-		copy(std::istream_iterator<double>(file),
-			std::istream_iterator<double>(),
-			std::back_inserter(row));
-		row.push_back(flag);
-		}
-	return matrix;					//i     d o n ' t     k n o w    W   T   H
-
+vector<vector<double>> transMatrix(vector<vector<string>> data) {
+	vector<vector<double>> trans_matrix;
+	for (int i = 1; i < data.size(); i++) {
+		vector<double> row;
+		for (int j = 0; j < data[i].size(); j++)
+			row.push_back((stod(data[i][j])));
+		trans_matrix.push_back(row);
+	}
+	return trans_matrix;
 }
 
 struct individual {
 	vector<int> genes; //genes=cities ex. 0 -> 1 -> 3 -> 2 -> 0
 	float fitness; // distance
-
 };
 
+float get_distance(vector<int> genes, vector<vector<double>> data) {
+	float distance;
+	/*
+	NAPISAÆ FUNKCJE DYSTANSU MIEDZY MIASTAMI
+	*/
+	return distance;
+}
 
+individual generate_individual(vector<vector<double>> data) {
+	individual population_member;
+	/*NAPISAÆ GENEROWANIE TYPKA*/
+	return population_member;
+}
+
+vector<individual> generate_population(int population_size, vector<vector<double>> data) {
+	vector<individual> population;
+	for (int i = 0; i < population_size; i++) {
+		population.push_back(generate_individual(data));
+	}
+	return population;
+}
+
+individual generate_mutated_kid(individual parent) {
+	individual mutated_kid;
+
+	/*NAPISAÆ DZIECKO*/
+
+	return mutated_kid;
+}
