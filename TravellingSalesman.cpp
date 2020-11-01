@@ -11,9 +11,11 @@ using namespace std;
 
 
 int main() {
-	vector<string> data = dataLoad(); 
-	split(data);
-	vector<string> firstLine();
+	vector<string> data = dataLoad();		//reading data from txt file
+	split(data);							//splitting sentence into words by " "
+	vector<string> firstLine();				//ignoring first line since they're names of the cities
+	transMatrix(data);								//transforming data into a matrix SOMETHING IS WRONG WIOENCOWNCWNVOCDS
+
 
 	return 0;
 
