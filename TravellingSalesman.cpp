@@ -13,6 +13,8 @@ using namespace std;
 int main() {
 	vector<string> data = dataLoad(); 
 	split(data);
+	vector<string> firstLine();
+
 	return 0;
 
 }
