@@ -3,11 +3,17 @@
 #include<iomanip>
 #include<fstream>
 #include<string>
+#include<sstream>
 #include<vector>
 #include "TravellingSalesman.h"
+using namespace std;
 using namespace std;
 
 
 int main() {
 	vector<string> data = dataLoad(); 
+	split(data);
+	return 0;
+
 }
+

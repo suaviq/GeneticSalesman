@@ -5,7 +5,7 @@
 #include<fstream> //including library which allows us to read files 
 #include<string>
 #include<vector>
-using namespace std;
+using namespace std; 
 
 vector<string> dataLoad() { //creating a vector which will hold our data
 	ifstream file("data.txt"); //read data from file "data.txt"
@@ -23,9 +23,33 @@ vector<string> dataLoad() { //creating a vector which will hold our data
 	return dcities;
 }
 
+void split(vector<string> dataLoad)
+{
+	string word = " ";
+	for (auto x : dataLoad) {
+		if (x == " ") {
+			cout << word << endl;
+
+		}
+		else {
+			word = word + x;
+		}
+	}
+	cout << word << endl;
+}
+
+
+
+	
+
+
+
+
+
 struct individual {
 	vector<int> genes; //genes=cities ex. 0 -> 1 -> 3 -> 2 -> 0
 	float fitness; // distance
+
 };
 
 
