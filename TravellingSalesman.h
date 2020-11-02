@@ -25,7 +25,7 @@ vector<string> splitStringBySpaces(string dataLoad)
 	return words;
 }
 
-
+//creating 2D vector for our matrix and creating matrix
 vector<vector<string>> loadData() {
 	ifstream file("data.txt");
 	vector<vector<string>> matrix;
@@ -43,17 +43,19 @@ vector<vector<string>> loadData() {
 	
 }
 
+//transforming and putting our data into a matrix
 vector<vector<double>> transMatrix(vector<vector<string>> data) {
 	vector<vector<double>> trans_matrix;
 	for (int i = 1; i < data.size(); i++) {
 		vector<double> row;
 		for (int j = 0; j < data[i].size(); j++)
-			row.push_back((stod(data[i][j])));
+			row.push_back((stod(data[i][j])));		//conversing string to double
 		trans_matrix.push_back(row);
 	}
 	return trans_matrix;
 }
 
+//GENETIC ALGORITHM 
 struct individual {
 	vector<int> genes; //genes=cities ex. 0 -> 1 -> 3 -> 2 -> 0
 	float fitness; // distance
@@ -72,6 +74,8 @@ individual generate_individual(vector<vector<double>> data) {
 	/*NAPISAÆ GENEROWANIE TYPKA*/
 	return population_member;
 }
+
+//w main napisac 10% wygenerowanej populacji
 
 vector<individual> generate_population(int population_size, vector<vector<double>> data) {
 	vector<individual> population;
