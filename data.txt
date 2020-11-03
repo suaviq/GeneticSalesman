@@ -1,5 +1,6 @@
-Warszawa Krakow Katowice Poznan 
-0 20 30 40 
-20 0 35 60 
-30 35 0 21 
-40 60 21 0 
+Warszawa Krakow Katowice Poznan Mikolow 
+0 20 30 40 250 
+20 0 35 60 100 
+30 35 0 21 12 
+40 60 21 0 200 
+250 100 12 200 0 

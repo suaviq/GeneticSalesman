@@ -5,6 +5,8 @@
 #include<fstream>								
 #include<string>
 #include<vector>
+#include<cmath>
+#include<random>
 using namespace std; 
 
 
@@ -58,20 +60,51 @@ vector<vector<double>> transMatrix(vector<vector<string>> data) {
 //GENETIC ALGORITHM 
 struct individual {
 	vector<int> genes; //genes=cities ex. 0 -> 1 -> 3 -> 2 -> 0
-	float fitness; // distance
+	double fitness = 0; // distance
 };
 
-float get_distance(vector<int> genes, vector<vector<double>> data) {
-	float distance;
-	/*
-	NAPISAÆ FUNKCJE DYSTANSU MIEDZY MIASTAMI
-	*/
-	return distance;
+double get_distance(vector<int> genes, vector<vector<double>> data) {
+	double dist = 0;				//distance
+	/*this function has to read values from our matrix
+				Warszawa Krakow Katowice Poznan 
+	coordinate: 0.		1.		2.		3.
+	0.			0		20		30		40 
+	1.			20		0		35		60 
+	2.			30		35		0		21 
+	3.			40		60		21		0		*/
+	/*wzi¹æ to z wektora genes?*/
+					//row
+					//col
+	for (int i = 0; i < genes.size() - 1; i++)
+	{
+		dist += data[genes[i]][genes[i+1]];			//returning value from matrix equals to distance between to cities
+	}
+	return dist;					
 }
+
+//losujemy liczbê ze zbioru genes, dodajemy j¹ do setu i usuwamy j¹ z genes aby siê nie powtarza³a przy nastêpnym losowaniu
+vector<int> generate_genes(int n) {
+	vector<int> genes;
+	vector<int> set;
+
+	for (int i = 1; i < n; i++) {
+		set.push_back(i);
+	}
+	genes.push_back(0);
+	for (int i = 1; i < n ; i++) {
+		int index = rand() % set.size();
+		genes.push_back(set[index]);
+		set.erase(set.begin() + index);
+	}
+	genes.push_back(0);
+	return genes;
+}
+
 
 individual generate_individual(vector<vector<double>> data) {
 	individual population_member;
-	/*NAPISAÆ GENEROWANIE TYPKA*/
+	population_member.genes = generate_genes((int)data.size());
+	population_member.fitness = get_distance(population_member.genes, data);
 	return population_member;
 }
 
@@ -89,6 +122,7 @@ individual generate_mutated_kid(individual parent) {
 	individual mutated_kid;
 
 	/*NAPISAÆ DZIECKO*/
+
 
 	return mutated_kid;
 }
