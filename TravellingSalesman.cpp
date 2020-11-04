@@ -6,41 +6,34 @@
 #include<sstream>
 #include<vector>
 #include "TravellingSalesman.h"
-#define POPULATION_SIZE 50 
+#define POPULATION_SIZE 20 
+#define N_ITERARTIONS 10
 using namespace std;
 
 
 int main() {
-	vector<vector<string>> loaded_data = loadData();		
-	for (int i = 0; i < loaded_data.size(); i++)
-	{
-		for (int j = 0; j < loaded_data[i].size(); j++)
-		{
-			cout <<"row " << i  << " col " << j << " val " << loaded_data[i][j] << endl;
-		}
-	}
+	vector<vector<string>> loaded_data = loadData();
 	vector<string> cities = loaded_data[0];
-	vector<vector<double>> data = transMatrix(loaded_data);
-	cout << "-------------------- data in form of matrix ---------------------" << endl;
-	for (int i = 0; i < data.size(); i++)
-	{
-		for (int j = 0; j < data[i].size(); j++)
-		{
-			cout << "row " << i << " col " << j << " val " << data[i][j] << endl;
-		}
-	}
-	vector<individual> population = generate_population(POPULATION_SIZE, data);
-	cout << "--------------------        population       ---------------------" << endl;
-	for (int i = 0; i < POPULATION_SIZE; i++) 
-	{
-		cout << "genes: ";
-		for (int j = 0; j < population[i].genes.size() - 1; j++)
-		{
-			cout << population[i].genes[j] << "-->";
-		}
-		cout << population[i].genes[population[i].genes.size() - 1] << " fitness: " << population[i].fitness << endl;
-	}
-	return 0;
 
+	for (int j = 0; j < cities.size() - 1; j++)
+	{
+		cout << cities[j] << " ";
+	}
+	cout << endl << "DO YOU KNOW DE WAE ?????!!??!" << endl;
+
+	vector<vector<double>> data = transMatrix(loaded_data);
+	vector<individual> population = generate_population(POPULATION_SIZE, data);
+	for (int i = 0; i < N_ITERARTIONS; i++) {
+		population = create_new_population(population, data, 0.1);
+	}
+
+	for (int j = 0; j < population[0].genes.size() - 1; j++)
+	{
+		cout << cities[population[0].genes[j]] << "-->";
+	}
+	cout << cities[population[0].genes[population[0].genes.size() - 1]] << " fitness: " << population[0].fitness << endl;
+
+	return 0;
 }
+	
 
