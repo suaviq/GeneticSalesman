@@ -29,8 +29,8 @@ vector<string> splitStringBySpaces(string dataLoad)
 }
 
 //creating 2D vector for our matrix
-vector<vector<string>> loadData() {
-	ifstream file("data.txt");	//opening the file 
+vector<vector<string>> loadData(string input) {
+	ifstream file(input);	//opening the file 
 	vector<vector<string>> matrix;
 	if (!file) {
 		cout << "Cannot open file" << endl;
@@ -73,7 +73,6 @@ double get_distance(vector<int> genes, vector<vector<double>> data) {
 	1.			20		0		35		60 
 	2.			30		35		0		21 
 	3.			40		60		21		0		*/
-	/*wzi¹æ to z wektora genes?*/
 	for (int i = 0; i < genes.size() - 1; i++)		//last city is 0 and our salesman returns back so we have to substract 1
 	{												//returning value from matrix equals to distance between to cities
 		dist += data[genes[i]][genes[i+1]];	
@@ -85,17 +84,19 @@ double get_distance(vector<int> genes, vector<vector<double>> data) {
 /*we randomly choose number from our set, then we are adding it to the set 
 and deleting it from genes so it won't reduplicate at the next draw*/
 
-vector<int> generate_genes(int n) {
+vector<int> generate_genes(int n) {			// n - number of cities 
 	vector<int> genes;		
-	vector<int> set;
+	vector<int> set;			//tworzymy osobny zbiór aby póŸniej usuwaæ z niego dane
 
-	for (int i = 1; i < n; i++) {
-		set.push_back(i);			}
-	genes.push_back(0);		
+	for (int i = 1; i < n; i++) {		//czytanie zbioru danych w set
+		set.push_back(i);			
+	}
+	genes.push_back(0);		// 0 bo zaczynamy od miasta zero
 	for (int i = 1; i < n ; i++) {
-		int index = rand() % set.size();
+		int index = rand() % set.size();	/*generowanie randomowych rozwi¹zañ do genes 
+											indexy s¹ generowane na podstawie aktualnej d³ugoœci zbioru*/
 		genes.push_back(set[index]);
-		set.erase(set.begin() + index);
+		set.erase(set.begin() + index);		//zapobieganie reduplikacji
 	}
 	genes.push_back(0);
 	return genes;
@@ -104,11 +105,12 @@ vector<int> generate_genes(int n) {
 
 individual generate_individual(vector<vector<double>> data) {
 	individual population_member;
-	population_member.genes = generate_genes((int)data.size());
+	population_member.genes = generate_genes((int)data.size()); 
 	population_member.fitness = get_distance(population_member.genes, data);
 	return population_member;
 }
 
+/*MUTATION which looks like that: example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1*/
 vector<int> swap(vector<int> genes, int index1, int index2) {
 	int gene_1 = genes[index1];
 	genes[index1] = genes[index2];
@@ -124,8 +126,8 @@ individual generate_mutated_kid(individual parent, vector<vector<double>> data) 
 		and we change the order of the cities in this solution (mutation)
 		> example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1
 		> mutated kid = new solution */
-	int index1 = 1 + rand() % (parent.genes.size() - 1);
-	int index2 = 1 + rand() % (parent.genes.size() - 1);
+	int index1 = 1 + rand() % (parent.genes.size() - 2); // 1 from beginning to ommit start city and -2 to ommit end city (Warszawa in our case)
+	int index2 = 1 + rand() % (parent.genes.size() - 2);
 	mutated_kid.genes = swap(parent.genes, index1, index2);
 	mutated_kid.fitness = get_distance(mutated_kid.genes, data);
 	return mutated_kid;
@@ -165,9 +167,11 @@ vector<individual> create_new_population(vector<individual> population, vector<v
 	vector<individual> bestMembers(&population[0], &population[n]); //zwraca wektor od pocz¹tku do n czyli rodziców
 	cout << "best member of current population : " << bestMembers[0].fitness << endl;
 	for (int i = 0; i < n; i++) {	//parents
-		for (int j = 0; j < (x - n)/n; j++) //generating kids for each parent 
+		for (int j = 0; j < (x - n)/n; j++) /*generating kids for each parent (x - n)/n means for example:
+											population size = x = 100
+											n = 10% *x = 10
+											(x - n)/n = (100-10)/10 = 9 = kids*/
 		{
-
 			bestMembers.push_back(generate_mutated_kid(bestMembers[i], data)); 
 		}
 	}
