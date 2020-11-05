@@ -82,9 +82,9 @@ int main(int argc, char* argv[])
 	}
 	cout << cities[population[0].genes[population[0].genes.size() - 1]] << " fitness: " << population[0].fitness << endl;
 	
-	ofstream out(output); //wczytywanie naszego outputu do pliku txt
+	ofstream out(output); //reading our output to txt file
 
-	for (int j = 0; j < population[0].genes.size() - 1; j++) //prawie ta sama pętla co wyżej ale do pliku
+	for (int j = 0; j < population[0].genes.size() - 1; j++) ///almost the same "for" as above-mentioned for but reading output to txt
 	{
 		out << cities[population[0].genes[j]] << "-->";
 	}

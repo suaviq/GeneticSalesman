@@ -86,17 +86,17 @@ and deleting it from genes so it won't reduplicate at the next draw*/
 
 vector<int> generate_genes(int n) {			// n - number of cities 
 	vector<int> genes;		
-	vector<int> set;			//tworzymy osobny zbiór aby póŸniej usuwaæ z niego dane
+	vector<int> set;			//we create seperate set to delete data from it later 
 
-	for (int i = 1; i < n; i++) {		//czytanie zbioru danych w set
+	for (int i = 1; i < n; i++) {		//reading data to set
 		set.push_back(i);			
 	}
-	genes.push_back(0);		// 0 bo zaczynamy od miasta zero
+	genes.push_back(0);
 	for (int i = 1; i < n ; i++) {
-		int index = rand() % set.size();	/*generowanie randomowych rozwi¹zañ do genes 
-											indexy s¹ generowane na podstawie aktualnej d³ugoœci zbioru*/
+		int index = rand() % set.size();	/*generating random solutions to genes
+											indexes are generated based on the current set length*/
 		genes.push_back(set[index]);
-		set.erase(set.begin() + index);		//zapobieganie reduplikacji
+		set.erase(set.begin() + index);		//preventing reduplication
 	}
 	genes.push_back(0);
 	return genes;
@@ -135,8 +135,6 @@ individual generate_mutated_kid(individual parent, vector<vector<double>> data) 
 
 //w main napisac 10% wygenerowanej populacji
 
-
-
 vector<individual> generate_population(int population_size, vector<vector<double>> data) {
 	vector<individual> population;
 	for (int i = 0; i < population_size; i++) {
@@ -145,7 +143,7 @@ vector<individual> generate_population(int population_size, vector<vector<double
 	return population;
 }
 
-bool compare_by_fitness(const individual& a, const individual& b) //porównuje individuals, aby sort wiedzia³, który jest wiêkszy
+bool compare_by_fitness(const individual& a, const individual& b) //comparing individuals so that sort knows which is bigger
 {
 	return a.fitness < b.fitness;
 }
@@ -164,7 +162,7 @@ vector<individual> create_new_population(vector<individual> population, vector<v
 	int x = population.size();
 	int n = n_parents * x;
 	sort(population.begin(), population.end(), compare_by_fitness); //sorting values in population vector
-	vector<individual> bestMembers(&population[0], &population[n]); //zwraca wektor od pocz¹tku do n czyli rodziców
+	vector<individual> bestMembers(&population[0], &population[n]); //return vector from beginning to n (parents)
 	cout << "best member of current population : " << bestMembers[0].fitness << endl;
 	for (int i = 0; i < n; i++) {	//parents
 		for (int j = 0; j < (x - n)/n; j++) /*generating kids for each parent (x - n)/n means for example:
