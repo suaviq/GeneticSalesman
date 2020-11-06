@@ -12,6 +12,7 @@ using namespace std;
 
 
 //splitting a sentence into words 
+//it's important to end always with space!
 vector<string> splitStringBySpaces(string dataLoad)
 {
 	string word = "";
@@ -24,6 +25,10 @@ vector<string> splitStringBySpaces(string dataLoad)
 		else {
 			word = word + dataLoad[i];
 		}
+	}
+	if (word.size() > 0) {
+		words.push_back(word);
+		word = "";
 	}
 	return words;
 }
@@ -109,6 +114,14 @@ individual generate_individual(vector<vector<double>> data) {
 	population_member.fitness = get_distance(population_member.genes, data);
 	return population_member;
 }
+
+
+/*CROSSOVER:
+* we take for example n/2 if n can be divided by two or (n+1)/2 if n is odd number
+* of our generated solution
+parent 1:	 1 --> 2 --> 4 --> (3) --> (5) --> (6) --> 1
+parent 2:	 1 --> (3) --> 2 --> 4 --> (6) --> (5) --> 1
+new kid:	 1 --> 2 --> 4 --> <radom order of 3, 5, 6>*/
 
 /*MUTATION which looks like that: example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1*/
 vector<int> swap(vector<int> genes, int index1, int index2) {

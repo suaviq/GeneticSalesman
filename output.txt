@@ -1,1 +1,1 @@
-Warszawa-->Gdansk-->Rybnik-->Gliwice-->Krakow-->Mikolow-->Katowice-->Poznan-->Warszawa fitness: 364.5
+Warszawa-->Poznan-->Katowice-->Mikolow-->Wladyslawowo-->Krakow-->Gliwice-->Rybnik-->Gdansk-->Warszawa fitness: 344.5

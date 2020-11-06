@@ -6,8 +6,8 @@
 #include<sstream>
 #include<vector>
 #include "TravellingSalesman.h"
-#define POPULATION_SIZE 20
-#define N_ITERARTIONS 20
+#define POPULATION_SIZE 100
+#define N_ITERARTIONS 10
 using namespace std;
 
 /*                     mister Dudzik's code                    */
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 	vector<vector<string>> loaded_data = loadData(input);
 	vector<string> cities = loaded_data[0];
 
-	for (int j = 0; j < cities.size() - 1; j++)
+	for (int j = 0; j < cities.size(); j++)
 	{
 		cout << cities[j] << " ";
 	}
