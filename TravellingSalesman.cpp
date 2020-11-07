@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
 	std::cout << "Done\n";
 
     /*                        my code                       */
+	/*Loading data from txt file to vector*/
 	vector<vector<string>> loaded_data = loadData(input);
 	vector<string> cities = loaded_data[0];
 

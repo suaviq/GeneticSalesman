@@ -10,9 +10,9 @@
 #include<algorithm>
 using namespace std; 
 
-
+/*I have to create 2D vector for my matrix wrtten in txt file and to do that
+I need this function to read matrix later properly*/
 //splitting a sentence into words 
-//it's important to end always with space!
 vector<string> splitStringBySpaces(string dataLoad)
 {
 	string word = "";
@@ -33,7 +33,7 @@ vector<string> splitStringBySpaces(string dataLoad)
 	return words;
 }
 
-//creating 2D vector for our matrix
+/*creating 2D vector for our data given in txt file reading line by line*/
 vector<vector<string>> loadData(string input) {
 	ifstream file(input);	//opening the file 
 	vector<vector<string>> matrix;
@@ -51,13 +51,15 @@ vector<vector<string>> loadData(string input) {
 	
 }
 
-//transforming and putting our data into a form of matrix (ignoring first line)
+
+/*Transforming and putting our data into a form of matrix. To do that I have to 
+ignore the first line (names of the cities)*/
 vector<vector<double>> transMatrix(vector<vector<string>> data) {
 	vector<vector<double>> trans_matrix;
 	for (int i = 1; i < data.size(); i++) {			//we have to start from 1 because first line is the names of the cities
 		vector<double> row;
 		for (int j = 0; j < data[i].size(); j++)
-			row.push_back((stod(data[i][j])));		//conversing string to double
+			row.push_back((stod(data[i][j])));		//stod - conversing string to double
 		trans_matrix.push_back(row);
 	}
 	return trans_matrix;
@@ -86,7 +88,7 @@ double get_distance(vector<int> genes, vector<vector<double>> data) {
 }
 
 //GENERATING GENES 
-/*we randomly choose number from our set, then we are adding it to the set 
+/*We randomly choose number from our set, then we are adding it to the set 
 and deleting it from genes so it won't reduplicate at the next draw*/
 
 vector<int> generate_genes(int n) {			// n - number of cities 
@@ -107,7 +109,8 @@ vector<int> generate_genes(int n) {			// n - number of cities
 	return genes;
 }
 
-
+/*Generating one population member (one solution of our problem) and
+assigning genes and fitness functions*/
 individual generate_individual(vector<vector<double>> data) {
 	individual population_member;
 	population_member.genes = generate_genes((int)data.size()); 
@@ -122,8 +125,30 @@ individual generate_individual(vector<vector<double>> data) {
 parent 1:	 1 --> 2 --> 4 --> (3) --> (5) --> (6) --> 1
 parent 2:	 1 --> (3) --> 2 --> 4 --> (6) --> (5) --> 1
 new kid:	 1 --> 2 --> 4 --> <radom order of 3, 5, 6>*/
+/* how to do it?
+* take n/2 cities if number of cities can be divided by two from parent 1
+* take (n+1)/2 cities if number of cities is odd from parent 1
+* OR I CAN GENERATE RANDOM NUMBER AND TAKE THIS MUCH FROM PARENT 1 IDK YET
+* ignore last city (which is also first city)
+* find those cities in parent 2
+* take what was left from parent 2 and then add to the vector number from parent 1 in random order*/
+individual generate_crossover_kid(individual parent, vector<vector<double>> data, vector<int> genes) {
+		int x;		//x is just an integer 
+		int n = genes.size();
+		int z;						// how many cities should we take
+		if (n / 2 == x) {			//from here we now how many cities from parent 1 should we take
+			z = x;
+		}
+		else {
+			z = x + 1;
+		}
+		genes.pop_back();		//deleting last element in vector and at the end i'm gonna add the first element
+		vector<int> half_of_parent1(genes.end() - z, genes.end()); //half of parent 1
+		//DOBRA PODDA£AM SIE BOL¥ MNIE OCZY MAM DOŒÆ NIC NIE WIDZÊ
+}
 
-/*MUTATION which looks like that: example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1*/
+/*MUTATION which generate new solutions from one population member
+for example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1*/
 vector<int> swap(vector<int> genes, int index1, int index2) {
 	int gene_1 = genes[index1];
 	genes[index1] = genes[index2];
@@ -131,14 +156,13 @@ vector<int> swap(vector<int> genes, int index1, int index2) {
 	return genes;
 }
 
-
+/* mutated kid:
+	> we take one population member (one of many solutions to solve the problem)
+	and we change the order of the cities in this solution (mutation)
+	> example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1
+	> mutated kid = new solution */
 individual generate_mutated_kid(individual parent, vector<vector<double>> data) {
 	individual mutated_kid;
-	/* mutated kid:
-		> we take one population member (one of many solutions to solve the problem)
-		and we change the order of the cities in this solution (mutation)
-		> example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1
-		> mutated kid = new solution */
 	int index1 = 1 + rand() % (parent.genes.size() - 2); // 1 from beginning to ommit start city and -2 to ommit end city (Warszawa in our case)
 	int index2 = 1 + rand() % (parent.genes.size() - 2);
 	mutated_kid.genes = swap(parent.genes, index1, index2);
@@ -146,8 +170,7 @@ individual generate_mutated_kid(individual parent, vector<vector<double>> data) 
 	return mutated_kid;
 }
 
-//w main napisac 10% wygenerowanej populacji
-
+/*Generating population for genetic algorithm*/
 vector<individual> generate_population(int population_size, vector<vector<double>> data) {
 	vector<individual> population;
 	for (int i = 0; i < population_size; i++) {
@@ -156,14 +179,16 @@ vector<individual> generate_population(int population_size, vector<vector<double
 	return population;
 }
 
-bool compare_by_fitness(const individual& a, const individual& b) //comparing individuals so that sort knows which is bigger
+/*Comparing individuals so that sort (which is used later in code) knows which one is bigger*/
+bool compare_by_fitness(const individual& a, const individual& b) 
 {
 	return a.fitness < b.fitness;
 }
 
+/*Creating new popultion*/
 vector<individual> create_new_population(vector<individual> population, vector<vector<double>> data, double n_parents = 0.1) {
 
-	/* Math:
+	/* Math beneath it;
 	1. population.size() = x
 	2. sort population
 	3. calculate 0.1*x = n
