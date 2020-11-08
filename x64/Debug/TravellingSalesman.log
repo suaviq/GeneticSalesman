@@ -1,4 +1,4 @@
 ﻿  TravellingSalesman.cpp
-C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\TravellingSalesman.h(175,27): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\TravellingSalesman.h(176,8): warning C4244: "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
+C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\TravellingSalesman.h(171,27): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\TravellingSalesman.h(172,8): warning C4244: "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
   TravellingSalesman.vcxproj -> C:\Users\alase\OneDrive\Pulpit\GeneticSalesman\x64\Debug\TravellingSalesman.exe

@@ -65,18 +65,22 @@ int main(int argc, char* argv[])
 	vector<vector<string>> loaded_data = loadData(input);
 	vector<string> cities = loaded_data[0];
 
+	/*Writing out cities*/
 	for (int j = 0; j < cities.size(); j++)
 	{
 		cout << cities[j] << " ";
 	}
 	cout << endl << "Do you know the route?" << endl;
-
+	/*Transforming and putting our data into a form of matrix.*/
 	vector<vector<double>> data = transMatrix(loaded_data);
+	/*Generating first population*/
 	vector<individual> population = generate_population(POPULATION_SIZE, data);
-	for (int i = 0; i < N_ITERARTIONS; i++) {
+	for (int i = 0; i < N_ITERARTIONS; i++)
+	{
+		/*next - creating new popuation of our solutions*/
 		population = create_new_population(population, data, 0.1);
 	}
-
+	/*Algorithm will optimize the route and tell us how we should go*/
 	for (int j = 0; j < population[0].genes.size() - 1; j++)
 	{
 		cout << cities[population[0].genes[j]] << "-->";

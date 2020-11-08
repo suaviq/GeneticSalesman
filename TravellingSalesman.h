@@ -118,35 +118,6 @@ individual generate_individual(vector<vector<double>> data) {
 	return population_member;
 }
 
-
-/*CROSSOVER:
-* we take for example n/2 if n can be divided by two or (n+1)/2 if n is odd number
-* of our generated solution
-parent 1:	 1 --> 2 --> 4 --> (3) --> (5) --> (6) --> 1
-parent 2:	 1 --> (3) --> 2 --> 4 --> (6) --> (5) --> 1
-new kid:	 1 --> 2 --> 4 --> <radom order of 3, 5, 6>*/
-/* how to do it?
-* take n/2 cities if number of cities can be divided by two from parent 1
-* take (n+1)/2 cities if number of cities is odd from parent 1
-* OR I CAN GENERATE RANDOM NUMBER AND TAKE THIS MUCH FROM PARENT 1 IDK YET
-* ignore last city (which is also first city)
-* find those cities in parent 2
-* take what was left from parent 2 and then add to the vector number from parent 1 in random order*/
-individual generate_crossover_kid(individual parent, vector<vector<double>> data, vector<int> genes) {
-		int x;		//x is just an integer 
-		int n = genes.size();
-		int z;						// how many cities should we take
-		if (n / 2 == x) {			//from here we now how many cities from parent 1 should we take
-			z = x;
-		}
-		else {
-			z = x + 1;
-		}
-		genes.pop_back();		//deleting last element in vector and at the end i'm gonna add the first element
-		vector<int> half_of_parent1(genes.end() - z, genes.end()); //half of parent 1
-		//DOBRA PODDA£AM SIE BOL¥ MNIE OCZY MAM DOŒÆ NIC NIE WIDZÊ
-}
-
 /*MUTATION which generate new solutions from one population member
 for example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1*/
 vector<int> swap(vector<int> genes, int index1, int index2) {
@@ -156,7 +127,7 @@ vector<int> swap(vector<int> genes, int index1, int index2) {
 	return genes;
 }
 
-/* mutated kid:
+/* Mutated kid:
 	> we take one population member (one of many solutions to solve the problem)
 	and we change the order of the cities in this solution (mutation)
 	> example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1
