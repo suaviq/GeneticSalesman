@@ -11,8 +11,8 @@
 using namespace std; 
 
 /**I have to create 2D vector for my matrix wrtten in txt file and to do that
-I need this function to read matrix later properly*/
-//splitting a sentence into words 
+*I need this function to read matrix later properly*/
+/**splitting a sentence into words*/
 
 vector<string> splitStringBySpaces(string dataLoad)
 {
@@ -36,16 +36,19 @@ vector<string> splitStringBySpaces(string dataLoad)
 
 /**creating 2D vector for our data given in txt file reading line by line*/
 vector<vector<string>> loadData(string input) {
-	ifstream file(input);	//opening the file 
+	/**opening the file*/
+	ifstream file(input);
 	vector<vector<string>> matrix;
 	if (!file) {
 		cout << "Cannot open file" << endl;
 		return matrix;
 	}
 	string cities;
-	while (getline(file, cities)) {		//reading file line by line
+	/**reading file line by line*/
+	while (getline(file, cities)) {		
 		vector<string> data_row = splitStringBySpaces(cities);
-		matrix.push_back(data_row);			//adding lines to vector
+		/**adding lines to vector*/
+		matrix.push_back(data_row);			
 	}
 	file.close();					
 	return matrix;
@@ -54,13 +57,15 @@ vector<vector<string>> loadData(string input) {
 
 
 /**Transforming and putting our data into a form of matrix. To do that I have to 
-ignore the first line (names of the cities)*/
+*ignore the first line (names of the cities)*/
 vector<vector<double>> transMatrix(vector<vector<string>> data) {
 	vector<vector<double>> trans_matrix;
-	for (int i = 1; i < data.size(); i++) {			//we have to start from 1 because first line is the names of the cities
+	/**we have to start from 1 because first line is the names of the cities*/
+	for (int i = 1; i < data.size(); i++) {			
 		vector<double> row;
 		for (int j = 0; j < data[i].size(); j++)
-			row.push_back((stod(data[i][j])));		//stod - conversing string to double
+			/**stod - conversing string to double*/
+			row.push_back((stod(data[i][j])));		
 		trans_matrix.push_back(row);
 	}
 	return trans_matrix;
@@ -68,21 +73,19 @@ vector<vector<double>> transMatrix(vector<vector<string>> data) {
 
 /**GENETIC ALGORITHM**/
 struct individual {
-	vector<int> genes;				//genes=cities ex. 0 -> 1 -> 3 -> 2 -> 0
-	double fitness = 0;				// distance
+	/**genes=cities ex. 0 -> 1 -> 3 -> 2 -> 0*/
+	vector<int> genes;	
+	/**distance*/
+	double fitness = 0;				
 };
 
-/**this function has to read values from our matrix
-			Warszawa Krakow Katowice Poznan
-coordinate: 0.		1.		2.		3.
-0.			0		20		30		40
-1.			20		0		35		60
-2.			30		35		0		21
-3.			40		60		21		0		*/
+/**this function has to read values from our matrix*/
 double get_distance(vector<int> genes, vector<vector<double>> data) {
-	double dist = 0;				//distance starting from 0 
-	for (int i = 0; i < genes.size() - 1; i++)		//last city is 0 and our salesman returns back so we have to substract 1
-	{												//returning value from matrix equals to distance between to cities
+	/**distance starting from 0 */
+	double dist = 0;
+	/**last city is 0 and our salesman returns back so we have to substract 1*/
+	for (int i = 0; i < genes.size() - 1; i++)		
+	{	/**returning value from matrix equals to distance between to cities*/
 		dist += data[genes[i]][genes[i+1]];	
 	}
 	return dist;					
@@ -91,20 +94,23 @@ double get_distance(vector<int> genes, vector<vector<double>> data) {
 /**GENERATING GENES 
 We randomly choose number from our set, then we are adding it to the set 
 and deleting it from genes so it won't reduplicate at the next draw*/
-
-vector<int> generate_genes(int n) {			// n - number of cities 
-	vector<int> genes;		
-	vector<int> set;			//we create seperate set to delete data from it later 
-
-	for (int i = 1; i < n; i++) {		//reading data to set
+/** n - number of cities */
+vector<int> generate_genes(int n) {			
+	vector<int> genes;	
+	/**we create seperate set to delete data from it later */
+	vector<int> set;			
+	/**reading data to set*/
+	for (int i = 1; i < n; i++) {		
 		set.push_back(i);			
 	}
 	genes.push_back(0);
 	for (int i = 1; i < n ; i++) {
-		int index = rand() % set.size();	/*generating random solutions to genes
-											indexes are generated based on the current set length*/
+		/**generating random solutions to genes
+		indexes are generated based on the current set length*/
+		int index = rand() % set.size();	
 		genes.push_back(set[index]);
-		set.erase(set.begin() + index);		//preventing reduplication
+		/**preventing reduplication*/
+		set.erase(set.begin() + index);		
 	}
 	genes.push_back(0);
 	return genes;
@@ -129,13 +135,14 @@ vector<int> swap(vector<int> genes, int index1, int index2) {
 }
 
 /** Mutated kid:
-	> we take one population member (one of many solutions to solve the problem)
-	and we change the order of the cities in this solution (mutation)
-	> example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1
-	> mutated kid = new solution */
+	*> we take one population member (one of many solutions to solve the problem)
+	*and we change the order of the cities in this solution (mutation)
+	*> example: from 1 --> 2 --> 4 --> 3 --> 1 to 1 --> 3 --> 4 --> 2 --> 1
+	*> mutated kid = new solution */
 individual generate_mutated_kid(individual parent, vector<vector<double>> data) {
 	individual mutated_kid;
-	int index1 = 1 + rand() % (parent.genes.size() - 2); // 1 from beginning to ommit start city and -2 to ommit end city (Warszawa in our case)
+	/** 1 from beginning to ommit start city and -2 to ommit end city (Warszawa in our case)*/
+	int index1 = 1 + rand() % (parent.genes.size() - 2); 
 	int index2 = 1 + rand() % (parent.genes.size() - 2);
 	mutated_kid.genes = swap(parent.genes, index1, index2);
 	mutated_kid.fitness = get_distance(mutated_kid.genes, data);
@@ -151,21 +158,22 @@ vector<individual> generate_population(int population_size, vector<vector<double
 	return population;
 }
 
-/**Comparing individuals so that sort (which is used later in code) knows which one is bigger*/
+/**Comparing individuals 
+  *so that sort (which is used later in code) knows which one is bigger*/
 bool compare_by_fitness(const individual& a, const individual& b) 
 {
 	return a.fitness < b.fitness;
 }
 
-/**Creating new popultion**/
-/** Math beneath it;
-	1. population.size() = x
-	2. sort population
-	3. calculate 0.1*x = n
-	4. if n is not a double, round up
-	5. take first n population members
-	6. mutate each member (n - 1) times (to return to original size of the population)
-	! first and the last city in vector has to stay the same ! */
+/**Creating new popultion
+*Math beneath it;
+	*1. population.size() = x
+	*2. sort population
+	*3. calculate 0.1*x = n
+	*4. if n is not a double, round up
+	*5. take first n population members
+	*6. mutate each member (n - 1) times (to return to original size of the population)
+	@return ! first and the last city in vector has to stay the same ! */
 vector<individual> create_new_population(vector<individual> population, vector<vector<double>> data, double n_parents = 0.1) {
 
 	int x = population.size();

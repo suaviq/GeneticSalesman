@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 	
 	std::cout << "Done\n";
 
-    /**                        my code                       */
+
 	/**Loading data from txt file to vector**/
 	vector<vector<string>> loaded_data = loadData(input);
 	vector<string> cities = loaded_data[0];
@@ -86,10 +86,10 @@ int main(int argc, char* argv[])
 		cout << cities[population[0].genes[j]] << "-->";
 	}
 	cout << cities[population[0].genes[population[0].genes.size() - 1]] << " fitness: " << population[0].fitness << endl;
-	
-	ofstream out(output); //reading our output to txt file
-
-	for (int j = 0; j < population[0].genes.size() - 1; j++) ///almost the same "for" as above-mentioned for but reading output to txt
+	/**reading our output to txt file*/
+	ofstream out(output); 
+	/**almost the same "for" as above-mentioned for but reading output to txt*/
+	for (int j = 0; j < population[0].genes.size() - 1; j++) 
 	{
 		out << cities[population[0].genes[j]] << "-->";
 	}
